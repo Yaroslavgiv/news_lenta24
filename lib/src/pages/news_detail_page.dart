@@ -31,7 +31,7 @@ class NewsDetailPage extends StatelessWidget {
                 ImageNewsWidget(
                   urlImage: newsItem.enclosure!.url!,
                   width: double.infinity,
-                  height: 200,
+                  height: 250,
                 ),
               const SizedBox(height: 16),
               Text(

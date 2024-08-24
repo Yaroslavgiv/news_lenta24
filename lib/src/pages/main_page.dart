@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:news_test_app/main.dart';
 
+import 'last24_news_page/cubit/news24_cubit.dart';
 import 'last24_news_page/last24_news_page.dart';
 import 'last_news_page/last_news_page.dart';
+import 'news_detail_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -30,12 +36,115 @@ class _MainPageState extends State<MainPage> {
   Widget buildCurrentWidget(int type) {
     switch (type) {
       case 0:
-        return const LastNewsPage();
+        return Column(
+          children: [
+            Expanded(
+              child: _buildNewsCarousel(),
+            ),
+            const Expanded(
+              child: LastNewsPage(),
+            ),
+          ],
+        );
       case 1:
         return const Last24NewsPage();
       default:
         throw ArgumentError();
     }
+  }
+
+  Widget _buildNewsCarousel() {
+    return Consumer(
+      builder: (context, ref, child) {
+        final news24Cubit = ref.watch(news24CubitProvider);
+
+        return BlocProvider.value(
+          value: news24Cubit,
+          child: BlocBuilder<News24Cubit, News24State>(
+            builder: (context, state) {
+              if (state is News24Initial) {
+                context.read<News24Cubit>().loadNews();
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is News24ErrorState) {
+                return Center(
+                  child: Text(
+                    state.errorMessage,
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                );
+              }
+              if (state is News24LoadedState) {
+                return CarouselSlider.builder(
+                  itemCount: state.news.length,
+                  itemBuilder: (context, index, realIndex) {
+                    final item = state.news[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                NewsDetailPage(newsItem: item),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(item.enclosure?.url ?? ''),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Container(
+                                color: Colors.black.withOpacity(0.5),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: Text(
+                                      item.title ?? '',
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  options: CarouselOptions(
+                    height: 200,
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    aspectRatio: 16 / 9,
+                    viewportFraction: 0.8,
+                  ),
+                );
+              }
+
+              return Container();
+            },
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -51,16 +160,16 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.red,
       ),
       body: bodyWidget,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectIndex,
-        selectedItemColor: Colors.red[900],
-        onTap: onItemTepped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Свежачок!!!'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.sports), label: 'Для любителей постарше!')
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: selectIndex,
+      //   selectedItemColor: Colors.red[900],
+      //   onTap: onItemTepped,
+      //   items: const [
+      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Свежачок!!!'),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.sports), label: 'Для любителей постарше!')
+      //   ],
+      // ),
     );
   }
 }

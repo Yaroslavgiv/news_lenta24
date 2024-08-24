@@ -5,11 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../main.dart';
 import '../news_detail_page.dart';
 import 'cubit/news_cubit.dart';
-import '../../utils/utils.dart';
 import '../../widgets/image_news_widget.dart';
 
 class LastNewsPage extends ConsumerWidget {
-  const LastNewsPage({Key? key}) : super(key: key);
+  const LastNewsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,7 +22,7 @@ class LastNewsPage extends ConsumerWidget {
 }
 
 class _LastNewsPage extends StatelessWidget {
-  const _LastNewsPage({Key? key}) : super(key: key);
+  const _LastNewsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
