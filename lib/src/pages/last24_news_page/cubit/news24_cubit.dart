@@ -17,7 +17,9 @@ class News24Cubit extends Cubit<News24State> {
     try {
       if (newsBox.containsKey('news24')) {
         final cachedNews = newsBox.get('news24') as List<RssItem>;
-        emit(News24LoadedState(cachedNews));
+        final readNews =
+            newsBox.get('readNews24', defaultValue: <String>{}) as Set<String>;
+        emit(News24LoadedState(cachedNews, readNews: readNews));
         return;
       }
 
@@ -29,6 +31,18 @@ class News24Cubit extends Cubit<News24State> {
       emit(News24LoadedState(rssFeed.items));
     } catch (e) {
       emit(News24ErrorState('Упссс!'));
+    }
+  }
+
+  void markAsRead(String? link) {
+    final newsBox = Hive.box('newsBox');
+    final currentState = state;
+
+    if (currentState is News24LoadedState && link != null) {
+      final updatedReadNews = Set<String>.from(currentState.readNews)
+        ..add(link);
+      newsBox.put('readNews24', updatedReadNews);
+      emit(News24LoadedState(currentState.news, readNews: updatedReadNews));
     }
   }
 

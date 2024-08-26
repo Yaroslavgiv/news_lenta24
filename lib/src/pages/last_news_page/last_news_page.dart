@@ -62,10 +62,15 @@ class _LastNewsPage extends StatelessWidget {
       itemCount: state.news.length,
       itemBuilder: (BuildContext context, int index) {
         final item = state.news[index];
+        final bool isRead = state.readNews.contains(item.link);
         return ListTile(
           title: Text(
             item.title!,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: isRead ? Colors.grey : Colors.black,
+            ),
             maxLines: 8,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
@@ -75,8 +80,11 @@ class _LastNewsPage extends StatelessWidget {
             color: Colors.grey[300]!,
             size: 30,
           ),
+          tileColor: isRead ? Colors.grey[200] : Colors.white,
           contentPadding: const EdgeInsets.all(15),
           onTap: () {
+            final newsCubit = context.read<NewsCubit>();
+            newsCubit.markAsRead(item.link);
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => NewsDetailPage(newsItem: item),

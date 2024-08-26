@@ -6,8 +6,10 @@ import 'package:news_test_app/main.dart';
 
 import 'last24_news_page/cubit/news24_cubit.dart';
 import 'last24_news_page/last24_news_page.dart';
+import 'last_news_page/cubit/news_cubit.dart';
 import 'last_news_page/last_news_page.dart';
 import 'news_detail_page.dart';
+import 'search_news_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -42,6 +44,7 @@ class _MainPageState extends State<MainPage> {
               child: _buildNewsCarousel(),
             ),
             const Expanded(
+              flex: 2,
               child: LastNewsPage(),
             ),
           ],
@@ -82,8 +85,11 @@ class _MainPageState extends State<MainPage> {
                   itemCount: state.news.length,
                   itemBuilder: (context, index, realIndex) {
                     final item = state.news[index];
+                    final bool isRead = state.readNews.contains(item.link);
+
                     return GestureDetector(
                       onTap: () {
+                        context.read<News24Cubit>().markAsRead(item.link);
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) =>
@@ -92,8 +98,8 @@ class _MainPageState extends State<MainPage> {
                         );
                       },
                       child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
                         decoration: BoxDecoration(
+                          color: isRead ? Colors.grey[200] : Colors.white,
                           image: DecorationImage(
                             image: NetworkImage(item.enclosure?.url ?? ''),
                             fit: BoxFit.cover,
@@ -158,18 +164,27 @@ class _MainPageState extends State<MainPage> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.red,
+        leading: IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const SearchNewsPage(),
+              ),
+            );
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.mark_email_read),
+            onPressed: () {
+              final newsCubit = context.read<NewsCubit>();
+              newsCubit.markAllAsRead();
+            },
+          ),
+        ],
       ),
       body: bodyWidget,
-      // bottomNavigationBar: BottomNavigationBar(
-      //   currentIndex: selectIndex,
-      //   selectedItemColor: Colors.red[900],
-      //   onTap: onItemTepped,
-      //   items: const [
-      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Свежачок!!!'),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.sports), label: 'Для любителей постарше!')
-      //   ],
-      // ),
     );
   }
 }

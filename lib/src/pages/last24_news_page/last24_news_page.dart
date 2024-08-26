@@ -57,7 +57,10 @@ class _LastNewsPage extends StatelessWidget {
       itemCount: state.news.length,
       itemBuilder: (BuildContext context, int index) {
         final item = state.news[index];
-        return ListItemWidget(item: item);
+        return ListItemWidget(
+          item: item,
+          searchQuery: '',
+        );
       },
     );
   }

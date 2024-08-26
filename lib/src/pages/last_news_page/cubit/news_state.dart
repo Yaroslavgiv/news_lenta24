@@ -7,8 +7,9 @@ class NewsInitial extends NewsState {}
 
 class NewsLoadedState extends NewsState {
   final List<RssItem> news;
+  final Set<String> readNews;
 
-  NewsLoadedState(this.news);
+  NewsLoadedState(this.news, {this.readNews = const <String>{}});
 }
 
 class NewsErrorState extends NewsState {

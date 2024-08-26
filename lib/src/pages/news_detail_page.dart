@@ -66,4 +66,21 @@ class NewsDetailPage extends StatelessWidget {
       ),
     );
   }
+
+  List<TextSpan> _highlightKeywords(String text, String keyword) {
+    final List<TextSpan> spans = [];
+    final splitText =
+        text.split(RegExp(r'(\b' + keyword + r'\b)', caseSensitive: false));
+    for (var part in splitText) {
+      if (part.toLowerCase() == keyword.toLowerCase()) {
+        spans.add(TextSpan(
+            text: part,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.grey)));
+      } else {
+        spans.add(TextSpan(text: part));
+      }
+    }
+    return spans;
+  }
 }
