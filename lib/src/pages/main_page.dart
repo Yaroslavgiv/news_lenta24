@@ -11,6 +11,7 @@ import 'last_news_page/last_news_page.dart';
 import 'news_detail_page.dart';
 import 'search_news_page.dart';
 
+// MainPage widget which is a StatefulWidget
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -28,6 +29,7 @@ class _MainPageState extends State<MainPage> {
     onItemTepped(0);
   }
 
+// Method to handle tab selection
   void onItemTepped(int index) {
     setState(() {
       selectIndex = index;
@@ -99,7 +101,9 @@ class _MainPageState extends State<MainPage> {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
-                        child: Container(
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
                           decoration: BoxDecoration(
                             color: isRead ? Colors.grey[200] : Colors.white,
                             image: DecorationImage(
@@ -107,6 +111,14 @@ class _MainPageState extends State<MainPage> {
                               fit: BoxFit.cover,
                             ),
                             borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 3,
+                                blurRadius: 7,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
                           child: Stack(
                             children: [
@@ -132,6 +144,19 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                 ),
                               ),
+                              Positioned(
+                                bottom: 10,
+                                right: 10,
+                                child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  color: Colors.white70,
+                                  child: const Text(
+                                    'New',
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.red),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -139,11 +164,16 @@ class _MainPageState extends State<MainPage> {
                     );
                   },
                   options: CarouselOptions(
-                    height: 200,
+                    height: 220,
                     autoPlay: true,
+                    autoPlayAnimationDuration: const Duration(seconds: 2),
+                    autoPlayCurve: Curves.easeInOut,
                     enlargeCenterPage: true,
                     aspectRatio: 16 / 9,
                     viewportFraction: 0.8,
+                    enableInfiniteScroll: true,
+                    scrollDirection: Axis.horizontal,
+                    enlargeStrategy: CenterPageEnlargeStrategy.height,
                   ),
                 );
               }
@@ -159,16 +189,22 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[400],
       appBar: AppBar(
         title: const Text(
-          'Lenta.ru',
-          style: TextStyle(color: Colors.black),
+          'LENTA.RU',
+          style: TextStyle(
+            color: Colors.white70,
+          ),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black38,
         leading: IconButton(
-          icon: const Icon(Icons.search),
+          icon: const Icon(
+            Icons.search,
+            color: Colors.white70,
+          ),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -179,7 +215,10 @@ class _MainPageState extends State<MainPage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.mark_email_read),
+            icon: const Icon(
+              Icons.mark_email_read,
+              color: Colors.white70,
+            ),
             onPressed: () {
               final newsCubit = context.read<NewsCubit>();
               newsCubit.markAllAsRead();

@@ -19,10 +19,16 @@ class NewsDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // Use newsCubit directly as needed
+      backgroundColor: Colors.grey[400],
       appBar: AppBar(
-        title: const Text('Новость', style: TextStyle(color: Colors.black)),
+        title: const Text(
+          'Новость',
+          style: TextStyle(
+            color: Colors.white70,
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black38,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -45,7 +51,10 @@ class NewsDetailPage extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 newsItem.author ?? 'Автор неизвестен',
-                style: const TextStyle(fontSize: 18, color: Colors.grey),
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.black87,
+                ),
               ),
               const SizedBox(height: 16),
               Text(

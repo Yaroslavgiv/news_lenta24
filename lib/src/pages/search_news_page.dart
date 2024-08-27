@@ -21,7 +21,10 @@ class _SearchNewsPageState extends ConsumerState<SearchNewsPage> {
     final newsCubit = ref.watch(newsCubitProvider);
 
     return Scaffold(
+      backgroundColor: Colors.grey[400],
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: TextField(
           onChanged: (value) {
             setState(() {
@@ -31,8 +34,10 @@ class _SearchNewsPageState extends ConsumerState<SearchNewsPage> {
           decoration: const InputDecoration(
             hintText: 'Поиск новостей...',
             border: InputBorder.none,
+            fillColor: Colors.transparent,
+            contentPadding: EdgeInsets.all(16),
           ),
-          style: const TextStyle(color: Colors.black, fontSize: 18),
+          style: const TextStyle(fontSize: 18),
         ),
       ),
       body: BlocProvider.value(

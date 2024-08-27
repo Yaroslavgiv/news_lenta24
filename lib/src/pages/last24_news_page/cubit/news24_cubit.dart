@@ -1,16 +1,18 @@
 import 'package:bloc/bloc.dart';
+import 'package:dart_rss/dart_rss.dart';
 import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
-import 'package:dart_rss/dart_rss.dart';
 import 'package:http/http.dart' as http;
 
 part 'news24_state.dart';
 
 const _top7URL = 'https://lenta.ru/rss/last24';
 
+/// Cubit for managing 24-hour news state
 class News24Cubit extends Cubit<News24State> {
   News24Cubit() : super(News24Initial());
 
+  /// Loads 24-hour news from API or cache
   Future<void> loadNews() async {
     final newsBox = Hive.box('newsBox');
 
@@ -30,10 +32,11 @@ class News24Cubit extends Cubit<News24State> {
       newsBox.put('news24', rssFeed.items);
       emit(News24LoadedState(rssFeed.items));
     } catch (e) {
-      emit(News24ErrorState('Упссс!'));
+      emit(News24ErrorState('Error loading 24-hour news'));
     }
   }
 
+  /// Marks a specific 24-hour news item as read
   void markAsRead(String? link) {
     final newsBox = Hive.box('newsBox');
     final currentState = state;
@@ -46,6 +49,7 @@ class News24Cubit extends Cubit<News24State> {
     }
   }
 
+  /// Reloads 24-hour news from API
   Future<void> reloadNews() async {
     emit(News24Initial());
     await loadNews();

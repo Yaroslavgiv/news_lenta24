@@ -8,6 +8,7 @@ import 'src/pages/last_news_page/cubit/news_cubit.dart';
 import 'src/pages/main_page.dart';
 import 'src/utils/res_item.dart';
 
+// Define providers for NewsCubit and News24Cubit
 final newsCubitProvider = Provider<NewsCubit>((ref) => NewsCubit());
 final news24CubitProvider = Provider<News24Cubit>((ref) => News24Cubit());
 
@@ -16,6 +17,7 @@ Future<void> main() async {
   await Hive.initFlutter();
   await Hive.openBox('newsBox');
 
+  // Register Hive adapters
   Hive.registerAdapter(RssItemAdapter());
   Hive.registerAdapter(EnclosureAdapter());
 
@@ -28,15 +30,12 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MainPage(),
+      home: MainPage(),
     );
   }
 }

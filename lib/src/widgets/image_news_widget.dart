@@ -22,12 +22,30 @@ class ImageNewsWidget extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius),
         child: CachedNetworkImage(
-          placeholder: (contex, url) => Image.asset('assets/no_image.png'),
           imageUrl: urlImage,
           height: height,
           width: width,
           alignment: Alignment.center,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => Container(
+            height: height,
+            width: width,
+            color: Colors.grey[200],
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          errorWidget: (context, url, error) => Container(
+            height: height,
+            width: width,
+            color: Colors.grey[200],
+            child: Image.asset(
+              'assets/no_image.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+          fadeInDuration: const Duration(milliseconds: 500),
+          fadeOutDuration: const Duration(milliseconds: 300),
         ),
       ),
     );

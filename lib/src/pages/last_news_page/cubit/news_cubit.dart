@@ -6,11 +6,13 @@ import 'package:http/http.dart' as http;
 
 part 'news_state.dart';
 
+// Define URL for top 7 news
 const _top7URL = 'https://lenta.ru/rss/top7';
 
 class NewsCubit extends Cubit<NewsState> {
   NewsCubit() : super(NewsInitial());
 
+  // Mark all news as read
   Future<void> markAllAsRead() async {
     final newsBox = Hive.box('newsBox');
     final currentState = state;
@@ -22,18 +24,20 @@ class NewsCubit extends Cubit<NewsState> {
     }
   }
 
+  // Mark a specific news item as read
   void markAsRead(String? link) {
     final newsBox = Hive.box('newsBox');
     final currentState = state;
 
     if (currentState is NewsLoadedState && link != null) {
       final updatedReadNews = Set<String>.from(currentState.readNews)
-        ..add(link!);
+        ..add(link);
       newsBox.put('readNews', updatedReadNews);
       emit(NewsLoadedState(currentState.news, readNews: updatedReadNews));
     }
   }
 
+  // Load news from the RSS feed
   Future<void> loadNews() async {
     final newsBox = Hive.box('newsBox');
 
@@ -54,10 +58,11 @@ class NewsCubit extends Cubit<NewsState> {
       newsBox.put('news', rssFeed.items);
       emit(NewsLoadedState(rssFeed.items, readNews: readNews));
     } catch (e) {
-      emit(NewsErrorState('Упссс!'));
+      emit(NewsErrorState('Oops! Something went wrong.'));
     }
   }
 
+  // Reload news
   Future<void> reloadNews() async {
     final currentState = state;
     Set<String> readNews = {};
