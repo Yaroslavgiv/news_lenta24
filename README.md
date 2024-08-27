@@ -38,39 +38,49 @@ Responsive UI: Ensures the application is responsive and visually appealing acro
 
 
 1. The main application file (main.dart)
+
 Necessary dependencies are initialized here, such as Hive for local data storage.
 A Provider is being created for qubits (NewsCubit, News24Cubit), which will manage the state of news pages.
 The application is launched using ProviderScope, which allows you to use Riverpod to manage the state.
 
 2. Data model (res_item.dart)
+
 The RssItem model is used to represent a news item, and the Enclosure is used to store information about multimedia attachments (for example, the URL of an image).
 These models are adapted for storage using Hive.
 
 3. Qubits for state management (for example, news_cubit.dart, news24_cubit.dart)
+
 NewsCubit and News24Cubit manage the loading status of news from RSS feeds. They upload data, mark the news as read, and handle errors.
 Qubits use the state to display various content (for example, download indication, news list, error messages).
 
 4. News display widgets (list_item_widget.dart, image_news_widget.dart)
+
 ListItemWidget is responsible for displaying individual news items such as headline, author, description and image.
 ImageNewsWidget handles image loading using CachedNetworkImage, which improves performance and user experience.
 
 5. The main page of the application (main_page.dart)
+
 The main page contains a list of the latest news (for example, the latest news, news for 24 hours). 
 The Carousel Slider is used to create a news slider, which adds interactivity to the interface. 
 When viewing a news item in the list, it is marked as read. 
 An update is implemented if you pull the list down.
 
 6. Using Bloc and Riverpod
+
 The blockprovider and the blockbuilder are used for state management, which allows you to respond to state changes and update the UI accordingly.
 The ConsumerWidget from Riverpod is used to get qubits and further manage the state.
 
 7. Click and click processing
+
 When you click on a news item, it is marked as read and you are redirected to the page with the details of the news.
 
 8. One news viewing page
+
 A page for viewing one news item has been implemented. There is a link to go to the news site to view the details of the news.
 
-9. News search page by keywords. A news search page has been implemented. When entering letter combinations, related news articles are suggested. There is a link to visit the news website to view the details of the news.
+9. News search page by keywords. (search_news_page) 
+
+A news search page has been implemented. When entering letter combinations, related news articles are suggested. There is a link to visit the news website to view the details of the news.
 
 Highlights:  Using Hive to cache and store the status of read news.
 Image processing and caching to improve performance.
@@ -105,39 +115,48 @@ Carousel Slider: Пакет для создания каруселей изоб�
 
 
 1. Главный файл приложения (main.dart)
+
 Здесь инициализируются необходимые зависимости, такие как Hive для локального хранения данных.
 Создаются Provider для кубитов (NewsCubit, News24Cubit), которые будут управлять состоянием новостных страниц.
 Приложение запускается с помощью ProviderScope, который позволяет использовать Riverpod для управления состоянием.
 
 2. Модель данных (res_item.dart)
+
 Модель RssItem используется для представления элемента новостей, а Enclosure — для хранения информации о мультимедийных вложениях (например, URL изображения).
 Эти модели адаптированы для хранения с использованием Hive.
 
 3. Кубиты для управления состоянием (например, news_cubit.dart, news24_cubit.dart)
+
 NewsCubit и News24Cubit управляют состоянием загрузки новостей из RSS-каналов. Они загружают данные, помечают новости как прочитанные и обрабатывают ошибки.
 Кубиты используют состояние для отображения различного контента (например, индикация загрузки, список новостей, сообщения об ошибках).
 
 4. Виджеты отображения новостей (list_item_widget.dart, image_news_widget.dart)
+
 ListItemWidget отвечает за отображение отдельных новостных элементов, таких как заголовок, автор, описание и изображение.
 ImageNewsWidget обрабатывает загрузку изображений с помощью CachedNetworkImage, что улучшает производительность и пользовательский опыт.
 
 5. Основная страница приложения (main_page.dart)
+
 Главная страница содержит список свежих новостей (например, последние новости, новости за 24 часа). 
 Carousel Slider используется для создания слайдера новостей, что добавляет интерактивности интерфейса. 
 При просмотре новости списка она отмечается как прочитанная. 
 Реализовано обновление если потянуть список вниз. 
 
 6. Использование Bloc и Riverpod
+
 BlocProvider и BlocBuilder используются для управления состоянием, что позволяет реагировать на изменения состояния и обновлять UI соответственно.
 ConsumerWidget из Riverpod используется для получения кубитов и дальнейшего управления состоянием.
 
 7. Обработка кликов и переходов
+
 При клике на новость она помечается как прочитанная и происходит переход на страницу с подробностями новости.
 
 8. Страница просмотра одной новости (news_detail_page)
+
 Реализована страница просмотра одной новости. Имеется ссылка для перехода на сайт новостей для просмотра подробностей новости.
 
-9. Страница поиска новостей по ключевым словам.
+9. Страница поиска новостей по ключевым словам. (search_news_page)
+
 Реализована страница поиска новости. При вводе сочетаний букв подбираются связанные новости. 
 Имеется ссылка для перехода на сайт новостей для просмотра подробностей новости.
 
