@@ -1,4 +1,4 @@
-![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/news_page.jpg)   ![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/news_page_gor.jpg) ![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/detail_page_ver.jpg)   ![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/detail_page_gor.jpg) 
+![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/news_page.jpg)   ![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/news_page_gor.jpg) ![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/detail_page_ver.jpg) ![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/detail_page_gor.jpg) 
 
 ![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/nevs_page_chek.jpg)   ![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/search_page.jpg)  ![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/search_page_gor.jpg)
 
