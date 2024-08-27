@@ -1,3 +1,4 @@
+![news](https://github.com/Yaroslavgiv/news_lenta24/blob/main/assets/news_page.jpg)
 Documentation
 
 Stack and Technologies Used:
