@@ -11,19 +11,23 @@ import 'image_news_widget.dart';
 class ListItemWidget extends StatelessWidget {
   final RssItem item;
 
-  const ListItemWidget(
-      {super.key, required this.item, required String searchQuery});
+  const ListItemWidget({
+    super.key,
+    required this.item,
+    required String searchQuery,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final newsCubit = context.read<NewsCubit>();
     return InkWell(
       onTap: () {
+        newsCubit.markAsRead(item.link);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) {
-              context.read<NewsCubit>().markAsRead(item.link);
-              return NewsDetailPage(newsItem: item);
-            },
+            builder: (context) => NewsDetailPage(
+              newsItem: item,
+            ),
           ),
         );
       },
@@ -44,7 +48,7 @@ class ListItemWidget extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 30,
+                    height: 20,
                     child: Text(
                       item.author ?? 'Автор неизвестен',
                       style: const TextStyle(
@@ -57,8 +61,8 @@ class ListItemWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 15),
                         child: ImageNewsWidget(
                           urlImage: item.enclosure!.url!,
-                          width: 130,
-                          height: 100,
+                          width: 120,
+                          height: 90,
                         ),
                       ),
                       Expanded(
@@ -85,7 +89,7 @@ class ListItemWidget extends StatelessWidget {
                     child: const Text('Читать на сайте',
                         style: TextStyle(decoration: TextDecoration.underline)),
                     onTap: () => launchUniversalLink(item.link!),
-                  )
+                  ),
                 ],
               ),
             ),

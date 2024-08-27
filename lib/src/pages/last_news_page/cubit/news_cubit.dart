@@ -36,12 +36,14 @@ class NewsCubit extends Cubit<NewsState> {
 
   Future<void> loadNews() async {
     final newsBox = Hive.box('newsBox');
-    final currentState = state;
 
     try {
+      final readNews =
+          newsBox.get('readNews', defaultValue: <String>{}) as Set<String>;
+
       if (newsBox.containsKey('news')) {
         final cachedNews = newsBox.get('news') as List<RssItem>;
-        emit(NewsLoadedState(cachedNews));
+        emit(NewsLoadedState(cachedNews, readNews: readNews));
         return;
       }
 
@@ -50,33 +52,30 @@ class NewsCubit extends Cubit<NewsState> {
       final rssFeed = RssFeed.parse(response.body);
 
       newsBox.put('news', rssFeed.items);
-      emit(NewsLoadedState(rssFeed.items));
+      emit(NewsLoadedState(rssFeed.items, readNews: readNews));
     } catch (e) {
       emit(NewsErrorState('Упссс!'));
     }
   }
 
   Future<void> reloadNews() async {
+    final currentState = state;
+    Set<String> readNews = {};
+
+    if (currentState is NewsLoadedState) {
+      readNews = currentState.readNews;
+    }
     emit(NewsInitial());
     await loadNews();
+    if (state is NewsLoadedState) {
+      emit(
+          NewsLoadedState((state as NewsLoadedState).news, readNews: readNews));
+    }
   }
 
   @override
   Future<void> close() {
     Hive.box('newsBox').close();
     return super.close();
-  }
-
-  Future<List<RssItem>> getRelatedNews(String keyword) async {
-    final newsBox = Hive.box('newsBox');
-    if (newsBox.containsKey('news')) {
-      final allNews = newsBox.get('news') as List<RssItem>;
-      return allNews
-          .where((item) =>
-              item.title?.toLowerCase().contains(keyword.toLowerCase()) ??
-              false)
-          .toList();
-    }
-    return [];
   }
 }
