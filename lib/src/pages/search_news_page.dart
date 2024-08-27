@@ -49,11 +49,25 @@ class _SearchNewsPageState extends ConsumerState<SearchNewsPage> {
                 return item.title?.toLowerCase().contains(searchQuery) ?? false;
               }).toList();
 
-              return ListView.builder(
-                itemCount: filteredNews.length,
-                itemBuilder: (context, index) {
-                  final item = filteredNews[index];
-                  return ListItemWidget(item: item, searchQuery: searchQuery);
+              return OrientationBuilder(
+                builder: (context, orientation) {
+                  final crossAxisCount =
+                      orientation == Orientation.portrait ? 1 : 2;
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 3 / 2,
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    itemCount: filteredNews.length,
+                    itemBuilder: (context, index) {
+                      final item = filteredNews[index];
+                      return ListItemWidget(
+                          item: item, searchQuery: searchQuery);
+                    },
+                  );
                 },
               );
             }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:news_test_app/main.dart';
 
+import '../../main.dart';
 import 'last24_news_page/cubit/news24_cubit.dart';
 import 'last24_news_page/last24_news_page.dart';
 import 'last_news_page/cubit/news_cubit.dart';
@@ -11,7 +11,6 @@ import 'last_news_page/last_news_page.dart';
 import 'news_detail_page.dart';
 import 'search_news_page.dart';
 
-// MainPage widget which is a StatefulWidget
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -29,7 +28,6 @@ class _MainPageState extends State<MainPage> {
     onItemTepped(0);
   }
 
-// Method to handle tab selection
   void onItemTepped(int index) {
     setState(() {
       selectIndex = index;
@@ -40,16 +38,35 @@ class _MainPageState extends State<MainPage> {
   Widget buildCurrentWidget(int type) {
     switch (type) {
       case 0:
-        return Column(
-          children: [
-            Expanded(
-              child: _buildNewsCarousel(),
-            ),
-            const Expanded(
-              flex: 2,
-              child: LastNewsPage(),
-            ),
-          ],
+        return OrientationBuilder(
+          builder: (context, orientation) {
+            return orientation == Orientation.portrait
+                ? Column(
+                    children: [
+                      Expanded(
+                        child: _buildNewsCarousel(orientation),
+                      ),
+                      const Expanded(
+                        flex: 2,
+                        child: LastNewsPage(),
+                      ),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: _buildNewsCarousel(orientation),
+                        ),
+                      ),
+                      const Expanded(
+                        // flex: 2,
+                        child: LastNewsPage(),
+                      ),
+                    ],
+                  );
+          },
         );
       case 1:
         return const Last24NewsPage();
@@ -58,7 +75,7 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  Widget _buildNewsCarousel() {
+  Widget _buildNewsCarousel(Orientation orientation) {
     return Consumer(
       builder: (context, ref, child) {
         final news24Cubit = ref.watch(news24CubitProvider);
@@ -164,15 +181,20 @@ class _MainPageState extends State<MainPage> {
                     );
                   },
                   options: CarouselOptions(
-                    height: 220,
+                    height: orientation == Orientation.portrait
+                        ? 220
+                        : double.infinity,
                     autoPlay: true,
                     autoPlayAnimationDuration: const Duration(seconds: 2),
                     autoPlayCurve: Curves.easeInOut,
                     enlargeCenterPage: true,
-                    aspectRatio: 16 / 9,
+                    aspectRatio:
+                        orientation == Orientation.portrait ? 16 / 9 : 9 / 16,
                     viewportFraction: 0.8,
                     enableInfiniteScroll: true,
-                    scrollDirection: Axis.horizontal,
+                    scrollDirection: orientation == Orientation.portrait
+                        ? Axis.horizontal
+                        : Axis.vertical,
                     enlargeStrategy: CenterPageEnlargeStrategy.height,
                   ),
                 );
@@ -198,7 +220,6 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         centerTitle: true,
-        elevation: 0,
         backgroundColor: Colors.black38,
         leading: IconButton(
           icon: const Icon(
