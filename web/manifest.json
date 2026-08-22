@@ -1,11 +1,11 @@
 {
-    "name": "news_test_app",
-    "short_name": "news_test_app",
+    "name": "Lenta24",
+    "short_name": "Lenta24",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#141218",
+    "theme_color": "#C62828",
+    "description": "Новости Lenta.ru, РИА Новости, Хабра и других источников",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

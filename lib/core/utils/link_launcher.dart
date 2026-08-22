@@ -1,12 +1,17 @@
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> launchUniversalLink(String url) async {
-  final Uri uri = Uri.parse(url);
+  final uri = Uri.tryParse(url);
+  if (uri == null) {
+    return;
+  }
 
   if (await canLaunchUrl(uri)) {
-    final bool nativeAppLaunch =
-        await launchUrl(uri, mode: LaunchMode.externalNonBrowserApplication);
-    if (!nativeAppLaunch) {
+    final openedNative = await launchUrl(
+      uri,
+      mode: LaunchMode.externalNonBrowserApplication,
+    );
+    if (!openedNative) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
