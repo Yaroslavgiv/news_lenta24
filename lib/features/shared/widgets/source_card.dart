@@ -45,7 +45,7 @@ class SourceCard extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 24,
-                        backgroundColor: source.color.withOpacity(0.12),
+                        backgroundColor: source.color.withValues(alpha: 0.12),
                         child: Text(
                           source.initials,
                           style: TextStyle(

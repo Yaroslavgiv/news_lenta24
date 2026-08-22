@@ -79,7 +79,7 @@ class _Placeholder extends StatelessWidget {
                 )
               : Icon(
                   Icons.newspaper_rounded,
-                  color: AppColors.accent.withOpacity(0.7),
+                  color: AppColors.accent.withValues(alpha: 0.7),
                 ),
         ),
       ),

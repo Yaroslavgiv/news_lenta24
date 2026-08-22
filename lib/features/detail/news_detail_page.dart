@@ -115,7 +115,9 @@ class _ArticleCopy extends StatelessWidget {
             _Chip(label: article.sourceName, filled: true),
             if (article.publishedAt != null)
               _Chip(label: formatArticleDate(article.publishedAt)),
-            ...extractKeywords(article.title).map(_Chip.new),
+            ...extractKeywords(article.title).map(
+              (keyword) => _Chip(label: keyword),
+            ),
           ],
         ),
         const SizedBox(height: 14),
@@ -205,7 +207,7 @@ class _RelatedNews extends StatelessWidget {
 }
 
 class _Chip extends StatelessWidget {
-  const _Chip(this.label, {this.filled = false});
+  const _Chip({required this.label, this.filled = false});
 
   final String label;
   final bool filled;

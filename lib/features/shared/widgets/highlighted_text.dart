@@ -53,7 +53,7 @@ List<TextSpan> highlightSpans(String text, String query, TextStyle? style) {
       TextSpan(
         text: text.substring(index, index + lowerQuery.length),
         style: (style ?? const TextStyle()).copyWith(
-          backgroundColor: AppColors.accent.withOpacity(0.18),
+          backgroundColor: AppColors.accent.withValues(alpha: 0.18),
           color: AppColors.accent,
           fontWeight: FontWeight.w800,
         ),

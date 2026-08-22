@@ -81,7 +81,7 @@ class ArticleCard extends StatelessWidget {
                   const SizedBox(width: 4),
                   Icon(
                     Icons.chevron_right_rounded,
-                    color: AppColors.ink.withOpacity(0.28),
+                    color: AppColors.ink.withValues(alpha: 0.28),
                   ),
                 ],
               ),

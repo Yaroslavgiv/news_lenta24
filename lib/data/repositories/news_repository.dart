@@ -1,32 +1,56 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dart_rss/dart_rss.dart';
 import 'package:hive/hive.dart';
-import 'package:http/http.dart' as http;
 
 import '../../core/utils/date_utils.dart';
 import '../../core/utils/html_utils.dart';
 import '../models/article.dart';
 import '../models/news_source.dart';
 
+typedef FeedDownloader = Future<String> Function(String url);
+
 class NewsRepository {
   NewsRepository({
     Box? box,
-    http.Client? client,
+    FeedDownloader? downloader,
     this.cacheTtl = const Duration(minutes: 15),
   })  : _box = box,
-        _client = client ?? http.Client();
+        _downloader = downloader ?? downloadFeed;
 
   static const _boxName = 'newsBox';
   static const _readKey = 'readNews';
-  static const _headers = {
-    'User-Agent': 'Mozilla/5.0 (compatible; Lenta24/1.0; +https://lenta.ru)',
-    'Accept': 'application/rss+xml, application/xml, text/xml, */*',
-  };
+  static const _userAgent =
+      'Mozilla/5.0 (compatible; Lenta24/1.0; +https://lenta.ru)';
 
   final Duration cacheTtl;
-  final http.Client _client;
+  final FeedDownloader _downloader;
   Box? _box;
 
   Box get box => _box ??= Hive.box(_boxName);
+
+  static Future<String> downloadFeed(String url) async {
+    final client = HttpClient()
+      ..userAgent = _userAgent
+      ..connectionTimeout = const Duration(seconds: 12);
+    try {
+      final request = await client.getUrl(Uri.parse(url));
+      request.headers.set(
+        HttpHeaders.acceptHeader,
+        'application/rss+xml, application/xml, text/xml, */*',
+      );
+      request.followRedirects = true;
+      final response = await request.close().timeout(const Duration(seconds: 15));
+      final body = await response.transform(utf8.decoder).join();
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        throw HttpException('HTTP ${response.statusCode}', uri: Uri.parse(url));
+      }
+      return body;
+    } finally {
+      client.close(force: true);
+    }
+  }
 
   Future<List<Article>> load(
     NewsSource source, {
@@ -53,15 +77,8 @@ class NewsRepository {
   }
 
   Future<List<Article>> fetchRemote(NewsSource source) async {
-    final response = await _client.get(
-      Uri.parse(source.rssUrl),
-      headers: _headers,
-    );
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception('Источник ${source.name} недоступен (${response.statusCode})');
-    }
-
-    final feed = RssFeed.parse(response.body);
+    final body = await _downloader(source.rssUrl);
+    final feed = RssFeed.parse(body);
     return feed.items
         .map((item) => _mapItem(item, source))
         .where((article) => article.title.isNotEmpty && article.link.isNotEmpty)

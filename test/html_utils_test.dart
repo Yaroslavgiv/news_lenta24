@@ -23,7 +23,7 @@ void main() {
 
   test('каталог содержит дополнительные источники', () {
     final names = NewsCatalog.extraSources.map((source) => source.name);
-    expect(names, containsAll(['РИА Новости', 'Хабр', 'ТАСС']));
+    expect(names, containsAll(['РИА Новости', 'Хабр', 'ТАСС', 'РБК']));
     expect(NewsCatalog.byId('habr').rssUrl, contains('habr.com'));
   });
 

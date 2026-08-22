@@ -75,24 +75,24 @@ abstract final class NewsCatalog {
     initials: 'Ъ',
   );
 
-  static const izvestia = NewsSource(
-    id: 'izvestia',
-    name: 'Известия',
-    description: 'Общество, политика и культура',
-    rssUrl: 'https://iz.ru/xml/rss/all.xml',
-    siteUrl: 'https://iz.ru',
-    color: Color(0xFFB71C1C),
-    initials: 'ИЗ',
+  static const rbc = NewsSource(
+    id: 'rbc',
+    name: 'РБК',
+    description: 'Бизнес, экономика и главные события дня',
+    rssUrl: 'https://rssexport.rbc.ru/rbcnews/news/30/full.rss',
+    siteUrl: 'https://www.rbc.ru',
+    color: Color(0xFF1A1A1A),
+    initials: 'РБК',
   );
 
-  static const gazeta = NewsSource(
-    id: 'gazeta',
-    name: 'Газета.ру',
-    description: 'Лента общественно-политических новостей',
-    rssUrl: 'https://www.gazeta.ru/export/rss/lenta.xml',
-    siteUrl: 'https://www.gazeta.ru',
-    color: Color(0xFF0D47A1),
-    initials: 'Г',
+  static const vedomosti = NewsSource(
+    id: 'vedomosti',
+    name: 'Ведомости',
+    description: 'Деловая газета и аналитика рынка',
+    rssUrl: 'https://www.vedomosti.ru/rss/news',
+    siteUrl: 'https://www.vedomosti.ru',
+    color: Color(0xFF0B1F3A),
+    initials: 'В',
   );
 
   static const meduza = NewsSource(
@@ -111,8 +111,8 @@ abstract final class NewsCatalog {
     tass,
     interfax,
     kommersant,
-    izvestia,
-    gazeta,
+    rbc,
+    vedomosti,
     meduza,
   ];
 
